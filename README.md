@@ -111,7 +111,7 @@ async def main():
     address = int(argv[2]) if len(argv) > 2 else DEFAULT_ADDRESS
     growatt_client = GrowattClient(port, address)
     try:
-        data = await growatt_client_.async_update()
+        data = await growatt_client.async_update()
         print(f"Sensors data: {data}")
     except Exception as error:
         print("Error: " + repr(error))
