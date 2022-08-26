@@ -1,4 +1,4 @@
-"""Constants for growattRS232 library."""
+"""Constants for GrowattClient library."""
 
 # Defaults
 DEFAULT_PORT = "/dev/ttyUSB0"

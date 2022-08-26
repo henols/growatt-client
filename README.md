@@ -1,4 +1,4 @@
-# growattRS232
+# GrowattClient
 
 [![PyPI][pypi-releases-shield]][pypi-releases]
 [![GitHub issues]()](https://github.com/henols/growatt-client/issues/)
@@ -98,7 +98,7 @@ from sys import argv
 from growatt-client.growatt import GrowattClient
 
 # defaults
-# USB port of RS232 converter
+# USB port of RS232/RS485 converter
 DEFAULT_PORT = "/dev/ttyUSB0"
 # Growatt modbus address
 DEFAULT_ADDRESS = 0x1

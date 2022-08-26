@@ -8,18 +8,18 @@ here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
-    name="growattRS232",
-    version="1.0.0",
+    name="GrowattClient",
+    version="0.0.1",
     description=(
         "Python wrapper for getting data asynchronously "
         "from Growatt inverters "
-        "via serial usb RS232 connection and modbus RTU protocol."
+        "via RS232 or RS485 connection and modbus RTU protocol."
     ),
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/ArdescoConsulting/growattRS232",
-    author="Manuel Stevens",
-    author_email="manuel.stevens@ardesco.be",
+    url="https://github.com/henols/growatt-client",
+    author="Henrik Olsson",
+    author_email="henols@gmail.com",
     license="MIT",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -27,12 +27,13 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3 :: Only",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: MIT License",
         "Intended Audience :: Developers",
     ],
-    keywords="growatt rs232 modbus",
+    keywords="growatt rs485 rs232 modbus",
     packages=find_packages(),
     python_requires=">=3.6, <4",
     install_requires=["pymodbus"],
@@ -40,9 +41,9 @@ setup(
     # fmt: off
     project_urls={
         "Bug Reports":
-        "https://github.com/ArdescoConsulting/growattRS232/issues",
+        "https://github.com/henols/growatt-client/issues",
         "Source":
-        "https://github.com/ArdescoConsulting/growattRS232",
+        "https://github.com/henols/growatt-client",
     },
     # fmt: on
 )
