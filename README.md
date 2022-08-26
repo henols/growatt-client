@@ -1,7 +1,7 @@
 # growattRS232
 
 [![PyPI][pypi-releases-shield]][pypi-releases]
-[![GitHub issues](https://img.shields.io/github/issues/ArdescoConsulting/growattRS232.svg)](https://GitHub.com/ArdescoConsulting/growattRS232/issues/)
+[![GitHub issues]()](https://github.com/henols/growatt-client/issues/)
 
 Python wrapper for getting data asynchronously from Growatt inverters via serial usb RS232 connection and modbus RTU protocol.
 
@@ -95,7 +95,7 @@ import asyncio
 import logging
 from sys import argv
 
-from growattRS232 import GrowattRS232
+from growatt-client.growatt import GrowattClient
 
 # defaults
 # USB port of RS232 converter
@@ -109,9 +109,9 @@ logging.basicConfig(level=logging.DEBUG)
 async def main():
     port = str(argv[1]) if len(argv) > 1 else DEFAULT_PORT
     address = int(argv[2]) if len(argv) > 2 else DEFAULT_ADDRESS
-    growattRS232 = GrowattRS232(port, address)
+    growatt_client = GrowattClient(port, address)
     try:
-        data = await growattRS232.async_update()
+        data = await growatt_client_.async_update()
         print(f"Sensors data: {data}")
     except Exception as error:
         print("Error: " + repr(error))
@@ -122,5 +122,5 @@ loop.run_until_complete(main())
 loop.close()
 ```
 
-[pypi-releases]: https://pypi.org/project/growattRS232
-[pypi-releases-shield]: https://img.shields.io/pypi/v/growattRS232
+[pypi-releases]: https://pypi.org/project/growatt-client
+[pypi-releases-shield]: https://img.shields.io/pypi/v/growatt-client
