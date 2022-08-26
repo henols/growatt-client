@@ -1,0 +1,38 @@
+{
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length=79"
+    ],
+    "cSpell.words": [
+        "EEPROM",
+        "Multiline",
+        "Tboost",
+        "Tinv",
+        "USERPROFILE",
+        "Varh",
+        "autopep",
+        "derating",
+        "isort",
+        "kvarh",
+        "modbus",
+        "mypy",
+        "pycodestyle",
+        "pydocstyle",
+        "repr",
+        "rsdf",
+        "rssf",
+        "setuptools",
+        "tabnine",
+        "unmatch",
+        "venv",
+        "yapf"
+    ],
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+}
