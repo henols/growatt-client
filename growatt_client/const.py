@@ -4,126 +4,15 @@
 DEFAULT_PORT = "/dev/ttyUSB0"
 DEFAULT_ADDRESS = 0x1
 
-# ATTRIBUTES
-ATTR_SERIAL_NUMBER = "serial_number"
-ATTR_MODEL_NUMBER = "model_number"
-ATTR_FIRMWARE = "firmware"
-
-ATTR_STATUS = "status"
-ATTR_STATUS_CODE = "status_code"
-
-ATTR_INPUT_POWER = "input_power"  # W
-ATTR_INPUT_ENERGY_TOTAL = "input_energy_total"  # kWh
-
-ATTR_INPUT_1_VOLTAGE = "input_1_voltage"  # V
-ATTR_INPUT_1_AMPERAGE = "input_1_amperage"  # A
-ATTR_INPUT_1_POWER = "input_1_power"  # W
-ATTR_INPUT_1_ENERGY_TODAY = "input_1_energy_today"  # kWh
-ATTR_INPUT_1_ENERGY_TOTAL = "input_1_energy_total"  # kWh
-
-ATTR_INPUT_2_VOLTAGE = "input_2_voltage"  # V
-ATTR_INPUT_2_AMPERAGE = "input_2_amperage"  # A
-ATTR_INPUT_2_POWER = "input_2_power"  # W
-ATTR_INPUT_2_ENERGY_TODAY = "input_2_energy_today"  # kWh
-ATTR_INPUT_2_ENERGY_TOTAL = "input_2_energy_total"  # kWh
-
-ATTR_OUTPUT_POWER = "output_power"  # W
-ATTR_OUTPUT_ENERGY_TODAY = "output_energy_today"  # kWh
-ATTR_OUTPUT_ENERGY_TOTAL = "output_energy_total"  # kWh
-
-ATTR_OUTPUT_REACTIVE_POWER = "output_reactive_power"  # Var
-ATTR_OUTPUT_REACTIVE_ENERGY_TODAY = "output_reactive_energy_today"  # kVarh
-ATTR_OUTPUT_REACTIVE_ENERGY_TOTAL = "output_reactive_energy_total"  # kVarh
-
-ATTR_OUTPUT_1_VOLTAGE = "output_1_voltage"  # V
-ATTR_OUTPUT_1_AMPERAGE = "output_1_amperage"  # A
-ATTR_OUTPUT_1_POWER = "output_1_power"  # W
-
-ATTR_OUTPUT_2_VOLTAGE = "output_2_voltage"  # V
-ATTR_OUTPUT_2_AMPERAGE = "output_2_amperage"  # A
-ATTR_OUTPUT_2_POWER = "output_2_power"  # W
-
-ATTR_OUTPUT_3_VOLTAGE = "output_3_voltage"  # V
-ATTR_OUTPUT_3_AMPERAGE = "output_3_amperage"  # A
-ATTR_OUTPUT_3_POWER = "output_3_power"  # W
-
-ATTR_OPERATION_HOURS = "operation_hours"  # s
-
-ATTR_FREQUENCY = "frequency"  # Hz
-
-ATTR_TEMPERATURE = "temperature"  # C
-ATTR_IPM_TEMPERATURE = "ipm_temperature"  # C
-
-ATTR_P_BUS_VOLTAGE = "p_bus_voltage"  # V
-ATTR_N_BUS_VOLTAGE = "n_bus_voltage"  # V
-
-ATTR_DERATING_MODE = "derating_mode"
-ATTR_DERATING = "derating"
-
-ATTR_FAULT_CODE = "fault_code"
-ATTR_FAULT = "fault"
-
-ATTR_WARNING_CODE = "warning_code"
-ATTR_WARNING_VALUE = "warning_value"
-ATTR_WARNING = "warning"
-
-# Codes
-STATUSCODES = {0: "Waiting", 1: "Normal", 3: "Fault", 5:"Unknown STATUS"}
-
-FAULTCODES = {
-    0: "None",
-    24: "Auto Test Failed",
-    25: "No AC Connection",
-    26: "PV Isolation Low",
-    27: "Residual I High",
-    28: "Output High DCI",
-    29: "PV Voltage High",
-    30: "AC V Outrange",
-    31: "AC F Outrange",
-    32: "Module Hot",
-}
-for i in range(1, 24):
-    FAULTCODES[i] = "Generic Error Code: %s" % str(99 + i)
-
-WARNINGCODES = {
-    0x0000: "None",
-    0x0001: "Fan warning",
-    0x0002: "String communication abnormal",
-    0x0004: "StrPID config Warning",
-    0x0008: "Fail to read EEPROM",
-    0x0010: "DSP and COM firmware unmatch",
-    0x0020: "Fail to write EEPROM",
-    0x0040: "SPD abnormal",
-    0x0080: "GND and N connect abnormal",
-    0x0100: "PV1 or PV2 circuit short",
-    0x0200: "PV1 or PV2 boost driver broken",
-    0x0400: "",
-    0x0800: "",
-    0x1000: "",
-    0x2000: "",
-    0x4000: "",
-    0x8000: "",
-}
-
-DERATINGMODES = {
-    0: "No Deratring",
-    1: "PV",
-    2: "",
-    3: "Vac",
-    4: "Fac",
-    5: "Tboost",
-    6: "Tinv",
-    7: "Control",
-    8: "*LoadSpeed",
-    9: "*OverBackByTime",
-    28: "Unknown DERATINGMODE",
-}
-
+# Word type
+INT_BYTE = "int_byte"
+SINGLE_BYTE = "single_byte"
+DOUBLE_BYTE = "double_byte"
 
 # Unit of measurement
 ELECTRICAL_POTENTIAL_VOLT = "V"
 ELECTRICAL_CURRENT_AMPERE = "A"
-POWER_WATT = "W"
+POWER_KILO_WATT = "kW"
 REACTIVE_POWER_VAR = "var"
 TIME_HOURS = "h"
 ENERGY_KILO_WATT_HOUR = "kWh"
@@ -131,51 +20,220 @@ REACTIVE_ENERGY_KILO_VAR_HOUR = "kvarh"
 FREQUENCY_HERTZ = "Hz"
 TEMP_CELSIUS = "°C"
 
-# Provided attributes and their associated unit of measurement
-ATTRIBUTES = {
-    ATTR_SERIAL_NUMBER: None,
-    ATTR_MODEL_NUMBER: None,
-    ATTR_FIRMWARE: None,
-    ATTR_STATUS: None,
-    ATTR_STATUS_CODE: None,
-    ATTR_INPUT_POWER: POWER_WATT,
-    ATTR_INPUT_ENERGY_TOTAL: ENERGY_KILO_WATT_HOUR,
-    ATTR_INPUT_1_VOLTAGE: ELECTRICAL_POTENTIAL_VOLT,
-    ATTR_INPUT_1_AMPERAGE: ELECTRICAL_CURRENT_AMPERE,
-    ATTR_INPUT_1_POWER: POWER_WATT,
-    ATTR_INPUT_1_ENERGY_TODAY: ENERGY_KILO_WATT_HOUR,
-    ATTR_INPUT_1_ENERGY_TOTAL: ENERGY_KILO_WATT_HOUR,
-    ATTR_INPUT_2_VOLTAGE: ELECTRICAL_POTENTIAL_VOLT,
-    ATTR_INPUT_2_AMPERAGE: ELECTRICAL_CURRENT_AMPERE,
-    ATTR_INPUT_2_POWER: POWER_WATT,
-    ATTR_INPUT_2_ENERGY_TODAY: ENERGY_KILO_WATT_HOUR,
-    ATTR_INPUT_2_ENERGY_TOTAL: ENERGY_KILO_WATT_HOUR,
-    ATTR_OUTPUT_POWER: POWER_WATT,
-    ATTR_OUTPUT_ENERGY_TODAY: ENERGY_KILO_WATT_HOUR,
-    ATTR_OUTPUT_ENERGY_TOTAL: ENERGY_KILO_WATT_HOUR,
-    ATTR_OUTPUT_REACTIVE_POWER: REACTIVE_POWER_VAR,
-    ATTR_OUTPUT_REACTIVE_ENERGY_TODAY: REACTIVE_ENERGY_KILO_VAR_HOUR,
-    ATTR_OUTPUT_REACTIVE_ENERGY_TOTAL: REACTIVE_ENERGY_KILO_VAR_HOUR,
-    ATTR_OUTPUT_1_VOLTAGE: ELECTRICAL_POTENTIAL_VOLT,
-    ATTR_OUTPUT_1_AMPERAGE: ELECTRICAL_CURRENT_AMPERE,
-    ATTR_OUTPUT_1_POWER: POWER_WATT,
-    ATTR_OUTPUT_2_VOLTAGE: ELECTRICAL_POTENTIAL_VOLT,
-    ATTR_OUTPUT_2_AMPERAGE: ELECTRICAL_CURRENT_AMPERE,
-    ATTR_OUTPUT_2_POWER: POWER_WATT,
-    ATTR_OUTPUT_3_VOLTAGE: ELECTRICAL_POTENTIAL_VOLT,
-    ATTR_OUTPUT_3_AMPERAGE: ELECTRICAL_CURRENT_AMPERE,
-    ATTR_OUTPUT_3_POWER: POWER_WATT,
-    ATTR_OPERATION_HOURS: TIME_HOURS,
-    ATTR_FREQUENCY: FREQUENCY_HERTZ,
-    ATTR_TEMPERATURE: TEMP_CELSIUS,
-    ATTR_IPM_TEMPERATURE: TEMP_CELSIUS,
-    ATTR_P_BUS_VOLTAGE: ELECTRICAL_POTENTIAL_VOLT,
-    ATTR_N_BUS_VOLTAGE: ELECTRICAL_POTENTIAL_VOLT,
-    ATTR_DERATING_MODE: None,
-    ATTR_DERATING: None,
-    ATTR_FAULT_CODE: None,
-    ATTR_FAULT: None,
-    ATTR_WARNING_CODE: None,
-    ATTR_WARNING_VALUE: None,
-    ATTR_WARNING: None,
-}
+
+def create_value(name, pos, unit, desc, type=DOUBLE_BYTE, scale=0.1):
+    return {
+        "name": name,
+        "pos": pos,
+        "type": type,
+        "unit": unit,
+        "description": desc,
+        "scale": scale,
+    }
+
+
+def group_values(values):
+    values.sort(key=lambda x: x["pos"])
+    groups = []
+    pos = -200
+
+    for value in values:
+        if pos + 100 < value["pos"] or (pos < 0 and value["pos"] >= 0):
+            pos = value["pos"]
+            group_list = []
+            group = {}
+            group["pos"] = pos
+            group["values"] = group_list
+            groups.append(group)
+        group_list.append(value)
+        group["length"] = value["pos"] - pos + (
+            2 if value["type"] == DOUBLE_BYTE else 1
+        )
+    return groups
+
+
+ATTRIBUTES = [
+    create_value("pv1_wattage", 5, POWER_KILO_WATT, "PV1 Wattage"),
+    create_value(
+        "pv1_voltage",
+        3,
+        ELECTRICAL_POTENTIAL_VOLT,
+        "PV1 voltage",
+        SINGLE_BYTE,
+    ),
+    create_value(
+        "pv1_energy_today",
+        59,
+        ENERGY_KILO_WATT_HOUR,
+        "PV1 energy today",
+    ),
+    create_value(
+        "pv1_energy_lifetime",
+        61,
+        ENERGY_KILO_WATT_HOUR,
+        "PV1 energy total",
+    ),
+    create_value("pv2_wattage", 9, POWER_KILO_WATT, "PV2 Wattage"),
+    create_value(
+        "pv2_voltage",
+        7,
+        ELECTRICAL_POTENTIAL_VOLT,
+        "PV2 voltage",
+        SINGLE_BYTE,
+    ),
+    create_value(
+        "pv2_energy_today",
+        63,
+        ENERGY_KILO_WATT_HOUR,
+        "PV2 energy today",
+    ),
+    create_value(
+        "pv2_energy_lifetime",
+        65,
+        ENERGY_KILO_WATT_HOUR,
+        "PV2 energy total",
+    ),
+    create_value("solar_generation", 1, POWER_KILO_WATT, "All PV Wattage"),
+    create_value(
+        "solar_generation_lifetime",
+        91,
+        ENERGY_KILO_WATT_HOUR,
+        "Lifetime solar energy",
+    ),
+    # Battery
+    create_value(
+        "statement_of_charge",
+        1014,
+        "%",
+        "Statement of charge",
+        INT_BYTE,
+        1,
+    ),
+    create_value(
+        "battery_voltage",
+        1013,
+        ELECTRICAL_POTENTIAL_VOLT,
+        "Battery voltage",
+        SINGLE_BYTE,
+    ),
+    create_value(
+        "battery_charge",
+        1011,
+        POWER_KILO_WATT,
+        "Battery charging",
+    ),
+    create_value(
+        "battery_charge_today",
+        1056,
+        ENERGY_KILO_WATT_HOUR,
+        "Battery charged today",
+    ),
+    create_value(
+        "battery_charge_lifetime",
+        1056,
+        ENERGY_KILO_WATT_HOUR,
+        "Lifetime battery charged",
+    ),
+    create_value(
+        "battery_discharge",
+        1009,
+        POWER_KILO_WATT,
+        "Battery discharging",
+    ),
+    create_value(
+        "battery_discharge_today",
+        1052,
+        ENERGY_KILO_WATT_HOUR,
+        "Battery discharged today",
+    ),
+    create_value(
+        "battery_discharge_lifetime",
+        1052,
+        ENERGY_KILO_WATT_HOUR,
+        "Lifetime battery discharged",
+    ),
+    # Load consumtion
+    create_value(
+        "load_consumption",
+        1073,
+        POWER_KILO_WATT,
+        "Load consumption",
+    ),
+    create_value(
+        "load_consumption_today",
+        1060,
+        ENERGY_KILO_WATT_HOUR,
+        "Load consumption today",
+    ),
+    create_value(
+        "load_consumption_lifetime",
+        1062,
+        ENERGY_KILO_WATT_HOUR,
+        "Lifetime load consumption",
+    ),
+    # Export to grid
+    create_value(
+        "export_to_grid",
+        1029,
+        POWER_KILO_WATT,
+        "Export to grid",
+    ),
+    create_value(
+        "export_to_grid_today",
+        1048,
+        ENERGY_KILO_WATT_HOUR,
+        "Export to grid today",
+    ),
+    create_value(
+        "export_to_grid_lifetime",
+        1050,
+        ENERGY_KILO_WATT_HOUR,
+        "Lifetime export to grid",
+    ),
+    # Import from grid
+    create_value(
+        "import_from_grid",
+        1021,
+        POWER_KILO_WATT,
+        "Import from grid",
+    ),
+    create_value(
+        "import_from_grid_today",
+        1044,
+        ENERGY_KILO_WATT_HOUR,
+        "Import from grid today",
+    ),
+    create_value(
+        "import_from_grid_lifetime",
+        1046,
+        ENERGY_KILO_WATT_HOUR,
+        "Lifetime import from grid",
+    ),
+    create_value(
+        "system_production_today",
+        1137,
+        ENERGY_KILO_WATT_HOUR,
+        "System production today",
+    ),
+    create_value(
+        "system_production_lifetime",
+        1139,
+        ENERGY_KILO_WATT_HOUR,
+        "Lifetime system production",
+    ),
+    create_value(
+        "grid_voltage",
+        38,
+        ELECTRICAL_POTENTIAL_VOLT,
+        "Grid voltage",
+        SINGLE_BYTE,
+    ),
+    create_value(
+        "last_update",
+        -1,
+        "ts",
+        "Last data update",
+    ),
+]
+
+ATTRIBUTES_GROUPED = group_values(ATTRIBUTES)
