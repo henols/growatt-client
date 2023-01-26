@@ -26,8 +26,7 @@ async def main():
             u = desc["unit"]
             logging.info(f"{d} {value} {u}")
     except Exception as error:
-        print(error)
-        print("Error: " + repr(error))
+        logging.error("Error: " + repr(error))
 
 
 loop = asyncio.get_event_loop()

@@ -46,14 +46,14 @@ def group_values(values):
             group["values"] = group_list
             groups.append(group)
         group_list.append(value)
-        group["length"] = value["pos"] - pos + (
-            2 if value["type"] == DOUBLE_BYTE else 1
+        group["length"] = (
+            value["pos"] - pos + (2 if value["type"] == DOUBLE_BYTE else 1)
         )
     return groups
 
 
 ATTRIBUTES = [
-    create_value("pv1_wattage", 5, POWER_KILO_WATT, "PV1 Wattage"),
+    create_value("pv1", 5, POWER_KILO_WATT, "PV1", DOUBLE_BYTE, 0.0001),
     create_value(
         "pv1_voltage",
         3,
@@ -62,18 +62,18 @@ ATTRIBUTES = [
         SINGLE_BYTE,
     ),
     create_value(
-        "pv1_energy_today",
+        "pv1_today",
         59,
         ENERGY_KILO_WATT_HOUR,
-        "PV1 energy today",
+        "PV1 today",
     ),
     create_value(
-        "pv1_energy_lifetime",
+        "pv1_lifetime",
         61,
         ENERGY_KILO_WATT_HOUR,
-        "PV1 energy total",
+        "PV1 total",
     ),
-    create_value("pv2_wattage", 9, POWER_KILO_WATT, "PV2 Wattage"),
+    create_value("pv2", 9, POWER_KILO_WATT, "PV2", DOUBLE_BYTE, 0.0001),
     create_value(
         "pv2_voltage",
         7,
@@ -82,23 +82,30 @@ ATTRIBUTES = [
         SINGLE_BYTE,
     ),
     create_value(
-        "pv2_energy_today",
+        "pv2_today",
         63,
         ENERGY_KILO_WATT_HOUR,
-        "PV2 energy today",
+        "PV2 today",
     ),
     create_value(
-        "pv2_energy_lifetime",
+        "pv2_lifetime",
         65,
         ENERGY_KILO_WATT_HOUR,
-        "PV2 energy total",
+        "PV2 total",
     ),
-    create_value("solar_generation", 1, POWER_KILO_WATT, "All PV Wattage"),
+    create_value(
+        "solar_generation",
+        1,
+        POWER_KILO_WATT,
+        "All PV generation",
+        DOUBLE_BYTE,
+        0.0001,
+    ),
     create_value(
         "solar_generation_lifetime",
         91,
         ENERGY_KILO_WATT_HOUR,
-        "Lifetime solar energy",
+        "All PV generation total",
     ),
     # Battery
     create_value(
@@ -121,6 +128,8 @@ ATTRIBUTES = [
         1011,
         POWER_KILO_WATT,
         "Battery charging",
+        DOUBLE_BYTE,
+        0.0001,
     ),
     create_value(
         "battery_charge_today",
@@ -130,15 +139,17 @@ ATTRIBUTES = [
     ),
     create_value(
         "battery_charge_lifetime",
-        1056,
+        1058,
         ENERGY_KILO_WATT_HOUR,
-        "Lifetime battery charged",
+        "Battery charged total",
     ),
     create_value(
         "battery_discharge",
         1009,
         POWER_KILO_WATT,
         "Battery discharging",
+        DOUBLE_BYTE,
+        0.0001,
     ),
     create_value(
         "battery_discharge_today",
@@ -148,16 +159,18 @@ ATTRIBUTES = [
     ),
     create_value(
         "battery_discharge_lifetime",
-        1052,
+        1054,
         ENERGY_KILO_WATT_HOUR,
-        "Lifetime battery discharged",
+        "Battery discharged total",
     ),
     # Load consumtion
     create_value(
         "load_consumption",
-        1073,
+        1037,
         POWER_KILO_WATT,
         "Load consumption",
+        DOUBLE_BYTE,
+        0.0001,
     ),
     create_value(
         "load_consumption_today",
@@ -169,7 +182,7 @@ ATTRIBUTES = [
         "load_consumption_lifetime",
         1062,
         ENERGY_KILO_WATT_HOUR,
-        "Lifetime load consumption",
+        "Load consumption total",
     ),
     # Export to grid
     create_value(
@@ -177,6 +190,8 @@ ATTRIBUTES = [
         1029,
         POWER_KILO_WATT,
         "Export to grid",
+        DOUBLE_BYTE,
+        0.0001,
     ),
     create_value(
         "export_to_grid_today",
@@ -188,7 +203,7 @@ ATTRIBUTES = [
         "export_to_grid_lifetime",
         1050,
         ENERGY_KILO_WATT_HOUR,
-        "Lifetime export to grid",
+        "Export to grid total",
     ),
     # Import from grid
     create_value(
@@ -196,6 +211,8 @@ ATTRIBUTES = [
         1021,
         POWER_KILO_WATT,
         "Import from grid",
+        DOUBLE_BYTE,
+        0.0001,
     ),
     create_value(
         "import_from_grid_today",
@@ -207,7 +224,7 @@ ATTRIBUTES = [
         "import_from_grid_lifetime",
         1046,
         ENERGY_KILO_WATT_HOUR,
-        "Lifetime import from grid",
+        "Import from grid total",
     ),
     create_value(
         "system_production_today",
@@ -219,7 +236,7 @@ ATTRIBUTES = [
         "system_production_lifetime",
         1139,
         ENERGY_KILO_WATT_HOUR,
-        "Lifetime system production",
+        "System production total",
     ),
     create_value(
         "grid_voltage",
