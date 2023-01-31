@@ -5,7 +5,6 @@ via serial usb RS232/RS485 connection and modbus RTU protocol.
 import logging
 import os
 
-from datetime import datetime
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 
 from .const import (
@@ -45,11 +44,14 @@ def get_value(res, index, type, scale):
     return 0
 
 
-def get_calculated_value(name):
-    if name == "last_update":
-        return datetime.now().timestamp()
-
-    return None
+def get_string(res, index, length):
+    string = ""
+    for pos in range(0, length):
+        string += str(
+            chr(res.registers[index + pos] >> 8)
+            + chr(res.registers[index + pos] & 0x000000FF)
+        )
+    return string
 
 
 class GrowattClient:
@@ -69,6 +71,11 @@ class GrowattClient:
         self._port = port
         # Modbus address (1-247)
         self._unit = address
+
+        if not os.path.exists(self._port):
+            self._logger.debug(f"USB port {self._port} is not available")
+            raise PortException(f"USB port {self._port} is not available")
+
         # Modbus serial rtu communication client
         self._client = ModbusClient(
             method="rtu",
@@ -79,6 +86,10 @@ class GrowattClient:
             bytesize=8,
             timeout=1,
         )
+
+        self._serial_number = ""
+        self._model_number = ""
+        self._firmware = ""
 
         self._logger.debug(
             (
@@ -99,11 +110,8 @@ class GrowattClient:
 
         data = {}
 
-        if not os.path.exists(self._port):
-            self._logger.debug(f"USB port {self._port} is not available")
-            raise PortException(f"USB port {self._port} is not available")
+        self.update_hardware_info()
 
-        self._client.timeout = True
         if not self._client.connect():
             self._logger.debug(
                 f"Modbus connection failed for address {self._unit}."
@@ -116,11 +124,6 @@ class GrowattClient:
             pos = group["pos"]
             values = group["values"]
             self._logger.debug(group)
-
-            if pos < 0:
-                for value in values:
-                    data[value["name"]] = get_calculated_value(value["name"])
-                continue
 
             registers = self._client.read_input_registers(
                 pos, group["length"], unit=self._unit
@@ -147,6 +150,55 @@ class GrowattClient:
 
         return data
 
+    def update_hardware_info(self):
+        if self._serial_number == "":
+            if not self._client.connect():
+                self._logger.debug(
+                    f"Modbus connection failed for address {self._unit}."
+                )
+                raise ModbusException(
+                    f"Modbus connection failed for address {self._unit}."
+                )
+
+            # Assuming the serial number doesn't change, it is read only once
+            registers = self._client.read_holding_registers(
+                0, 30, unit=self._unit
+            )
+            if registers.isError():
+                self._client.close()
+                self._logger.debug("Modbus read failed for holding registers.")
+                raise ModbusException(
+                    "Modbus read failed for holding registers."
+                )
+
+            self._firmware = get_string(registers, 9, 3)
+            self._serial_number = get_string(registers, 23, 5)
+
+            mo = (registers.registers[28] << 16) + registers.registers[29]
+            self._model_number = (
+                "T"
+                + str((mo & 0xF00000) >> 20)
+                + " Q"
+                + str((mo & 0x0F0000) >> 16)
+                + " P"
+                + str((mo & 0x00F000) >> 12)
+                + " U"
+                + str((mo & 0x000F00) >> 8)
+                + " M"
+                + str((mo & 0x0000F0) >> 4)
+                + " S"
+                + str((mo & 0x00000F))
+            )
+
+            self._logger.debug(
+                (
+                    f"GrowattRS232 with serial number {self._serial_number} "
+                    f"is model {self._model_number} "
+                    f"and has firmware {self._firmware}."
+                )
+            )
+            self._client.close()
+
     def get_attributes(self):
         return ATTRIBUTES
 
@@ -154,6 +206,18 @@ class GrowattClient:
         for a in ATTRIBUTES:
             if a["name"] == name:
                 return a
+
+    def get_serial_number(self):
+        self.update_hardware_info()
+        return self._serial_number
+
+    def get_firmware(self):
+        self.update_hardware_info()
+        return self._firmware
+
+    def get_model_number(self):
+        self.update_hardware_info()
+        return self._model_number
 
 
 class PortException(Exception):

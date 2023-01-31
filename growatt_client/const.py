@@ -245,12 +245,6 @@ ATTRIBUTES = [
         "Grid voltage",
         SINGLE_BYTE,
     ),
-    create_value(
-        "last_update",
-        -1,
-        "ts",
-        "Last data update",
-    ),
 ]
 
 ATTRIBUTES_GROUPED = group_values(ATTRIBUTES)
