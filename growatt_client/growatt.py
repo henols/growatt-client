@@ -5,16 +5,16 @@ via serial usb RS232/RS485 connection and modbus RTU protocol.
 import logging
 import os
 
-from pymodbus.client.sync import ModbusSerialClient as ModbusClient
+from pymodbus.client.serial import AsyncModbusSerialClient as ModbusClient
 
 from .const import (
-    DEFAULT_ADDRESS,
-    DEFAULT_PORT,
-    INT_BYTE,
-    SINGLE_BYTE,
-    DOUBLE_BYTE,
     ATTRIBUTES,
     ATTRIBUTES_GROUPED,
+    DEFAULT_ADDRESS,
+    DEFAULT_PORT,
+    DOUBLE_BYTE,
+    INT_BYTE,
+    SINGLE_BYTE,
 )
 
 
@@ -69,8 +69,7 @@ class GrowattClient:
 
         # usb port
         self._port = port
-        # Modbus address (1-247)
-        self._unit = address
+        self._address = address
 
         if not os.path.exists(self._port):
             self._logger.debug(f"USB port {self._port} is not available")
@@ -78,7 +77,6 @@ class GrowattClient:
 
         # Modbus serial rtu communication client
         self._client = ModbusClient(
-            method="rtu",
             port=port,
             baudrate=9600,
             stopbits=1,
@@ -92,10 +90,7 @@ class GrowattClient:
         self._firmware = ""
 
         self._logger.debug(
-            (
-                f"GrowattClient initialized with usb port {self._port} "
-                f"and modbus address {self._unit}."
-            )
+            f"GrowattClient initialized with usb port {self._port}"
         )
 
     async def async_update(self):
@@ -103,33 +98,29 @@ class GrowattClient:
         Read Growatt data.
 
         Modbus rtu information from
-        "Growatt PV Inverter Modbus RS485 RTU Protocol V3.14 2016-09-27".
+        "Growatt Inverter Modbus RTU Protocol V1.20 2020-04-28".
         The availability of the attributes depends
         on the firmware version of your inverter.
         """
 
         data = {}
-
-        self.update_hardware_info()
-
-        if not self._client.connect():
-            self._logger.debug(
-                f"Modbus connection failed for address {self._unit}."
-            )
-            raise ModbusException(
-                f"Modbus connection failed for address {self._unit}."
-            )
+        await self.update_hardware_info()
 
         for group in ATTRIBUTES_GROUPED:
             pos = group["pos"]
             values = group["values"]
             self._logger.debug(group)
 
-            registers = self._client.read_input_registers(
-                pos, group["length"], unit=self._unit
+            if not await self._client.connect():
+                self._logger.debug("Modbus connection failed.")
+                raise ModbusException("Modbus connection failed.")
+
+            registers = await self._client.read_input_registers(
+                pos, group["length"], slave=self._address
             )
+
             if registers.isError():
-                self._client.close()
+                await self._client.close()
                 self._logger.debug(f"Modbus read failed for registers {pos}.")
                 raise ModbusException(
                     f"Modbus read failed for registers {pos}."
@@ -143,29 +134,22 @@ class GrowattClient:
                 )
                 data[value["name"]] = val
 
-        self._client.close()
-
-        if not data:
-            return {}
+            await self._client.close()
 
         return data
 
-    def update_hardware_info(self):
+    async def update_hardware_info(self):
         if self._serial_number == "":
-            if not self._client.connect():
-                self._logger.debug(
-                    f"Modbus connection failed for address {self._unit}."
-                )
-                raise ModbusException(
-                    f"Modbus connection failed for address {self._unit}."
-                )
+            if not await self._client.connect():
+                self._logger.debug("Modbus connection failed.")
+                raise ModbusException("Modbus connection failed.")
 
             # Assuming the serial number doesn't change, it is read only once
-            registers = self._client.read_holding_registers(
-                0, 30, unit=self._unit
+            registers = await self._client.read_holding_registers(
+                0, 30, slave=self._address
             )
             if registers.isError():
-                self._client.close()
+                await self._client.close()
                 self._logger.debug("Modbus read failed for holding registers.")
                 raise ModbusException(
                     "Modbus read failed for holding registers."
@@ -192,12 +176,12 @@ class GrowattClient:
 
             self._logger.debug(
                 (
-                    f"GrowattRS232 with serial number {self._serial_number} "
+                    f"Growatt serial number {self._serial_number} "
                     f"is model {self._model_number} "
                     f"and has firmware {self._firmware}."
                 )
             )
-            self._client.close()
+            await self._client.close()
 
     def get_attributes(self):
         return ATTRIBUTES
@@ -208,15 +192,12 @@ class GrowattClient:
                 return a
 
     def get_serial_number(self):
-        self.update_hardware_info()
         return self._serial_number
 
     def get_firmware(self):
-        self.update_hardware_info()
         return self._firmware
 
     def get_model_number(self):
-        self.update_hardware_info()
         return self._model_number
 
 
