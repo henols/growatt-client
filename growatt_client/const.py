@@ -32,6 +32,19 @@ def create_value(name, pos, unit, desc, type=DOUBLE_BYTE, scale=0.1):
     }
 
 
+def create_template(name, unit, desc, template):
+    """Creates a nice template value"""
+    template = " ".join(template.split())
+    value = {
+        "name": name,
+        "unit": unit,
+        "description": desc,
+        "template": template,
+    }
+    print(value)
+    return value
+
+
 def group_values(values):
     values.sort(key=lambda x: x["pos"])
     groups = []
@@ -165,24 +178,24 @@ ATTRIBUTES = [
     ),
     # Load consumtion
     create_value(
-        "load_consumption",
+        "local_load",
         1037,
         POWER_KILO_WATT,
-        "Load consumption",
+        "Inverter local load",
         DOUBLE_BYTE,
         0.0001,
     ),
     create_value(
-        "load_consumption_today",
+        "local_load_today",
         1060,
         ENERGY_KILO_WATT_HOUR,
-        "Load consumption today",
+        "Inverter local load today",
     ),
     create_value(
-        "load_consumption_lifetime",
+        "local_load_lifetime",
         1062,
         ENERGY_KILO_WATT_HOUR,
-        "Load consumption total",
+        "Inverter local load total",
     ),
     # Export to grid
     create_value(
@@ -245,6 +258,80 @@ ATTRIBUTES = [
         "Grid voltage",
         SINGLE_BYTE,
     ),
+    # create_value(
+    #     "extra_inverter_power_today",
+    #     1133,
+    #     ENERGY_KILO_WATT_HOUR,
+    #     "Extra inverter Power today",
+    # ),
+    # create_value(
+    #     "extra_inverter_power_lifetime",
+    #     1135,
+    #     ENERGY_KILO_WATT_HOUR,
+    #     "Extra inverter Power total",
+    # ),
+    create_value(
+        "grid_frequency",
+        37,
+        FREQUENCY_HERTZ,
+        "Grid frequency",
+        SINGLE_BYTE,
+        0.01
+    ),
+    create_value(
+        "inverter_temperature1",
+        93,
+        TEMP_CELSIUS,
+        "Inverter temperature",
+        SINGLE_BYTE,
+    ),
+    create_value(
+        "inverter_temperature2",
+        94,
+        TEMP_CELSIUS,
+        "The inside IPM in inverter Temperature",
+        SINGLE_BYTE,
+    ),
+    create_value(
+        "inverter_temperature3",
+        1040,
+        TEMP_CELSIUS,
+        "Battery temperature",
+        SINGLE_BYTE,
+    ),
 ]
 
 ATTRIBUTES_GROUPED = group_values(ATTRIBUTES)
+
+
+ATTRIBUTE_TEMPALTES = [
+    create_template(
+        "solar_generation_today",
+        ENERGY_KILO_WATT_HOUR,
+        "All PV generation today",
+        "{pv2_today} + {pv1_today}",
+    ),
+    create_template(
+        "consumption",
+        POWER_KILO_WATT,
+        "Consumption",
+        "{solar_generation} + {battery_discharge} + {import_from_grid} - \
+            {export_to_grid} - {battery_charge}",
+    ),
+    create_template(
+        "consumption_today",
+        ENERGY_KILO_WATT_HOUR,
+        "Consumption today",
+        "{solar_generation_today} + {battery_discharge_today} + \
+            {import_from_grid_today} - {export_to_grid_today} - \
+            {battery_charge_today}",
+    ),
+    create_template(
+        "consumption_lifetime",
+        ENERGY_KILO_WATT_HOUR,
+        "Consumption total",
+        "{solar_generation_lifetime} + {battery_discharge_lifetime} + \
+            {import_from_grid_lifetime} - {export_to_grid_lifetime} - \
+            {battery_charge_lifetime}",
+    ),
+]

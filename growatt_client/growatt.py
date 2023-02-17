@@ -10,6 +10,7 @@ from pymodbus.client.serial import AsyncModbusSerialClient as ModbusClient
 from .const import (
     ATTRIBUTES,
     ATTRIBUTES_GROUPED,
+    ATTRIBUTE_TEMPALTES,
     DEFAULT_ADDRESS,
     DEFAULT_PORT,
     DOUBLE_BYTE,
@@ -136,6 +137,17 @@ class GrowattClient:
 
             await self._client.close()
 
+        for value in ATTRIBUTE_TEMPALTES:
+            templ = value["template"].format_map(data)
+            val = round(eval(templ), 1)
+            self._logger.info(
+                "Converting template: %s \n -> to: %s = %f",
+                value["template"],
+                templ,
+                val,
+            )
+            data[value["name"]] = val
+
         return data
 
     async def update_hardware_info(self):
@@ -146,7 +158,7 @@ class GrowattClient:
 
             # Assuming the serial number doesn't change, it is read only once
             registers = await self._client.read_holding_registers(
-                0, 30, slave=self._address
+                0, 52, slave=self._address
             )
             if registers.isError():
                 await self._client.close()
@@ -181,13 +193,26 @@ class GrowattClient:
                     f"and has firmware {self._firmware}."
                 )
             )
+
+            self._logger.info(
+                (
+                    f"{registers.registers[45]}-"
+                    f"{registers.registers[46]:02d}-"
+                    f"{registers.registers[47]:02d} "
+                    f"{registers.registers[48]:02d}:"
+                    f"{registers.registers[49]:02d}:"
+                    f"{registers.registers[50]:02d} "
+                    # f"day: {registers.registers[51]} "
+                )
+            )
+
             await self._client.close()
 
     def get_attributes(self):
-        return ATTRIBUTES
+        return ATTRIBUTES + ATTRIBUTE_TEMPALTES
 
     def get_attribute(self, name):
-        for a in ATTRIBUTES:
+        for a in self.get_attributes():
             if a["name"] == name:
                 return a
 
