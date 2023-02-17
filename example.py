@@ -18,11 +18,8 @@ async def run_async_client():
     address = int(argv[2]) if len(argv) > 2 else DEFAULT_ADDRESS
     client = GrowattClient(port, address)
 
-    # try:
-
     data = await client.async_update()
     ser = client.get_serial_number()
-    # data = await asyncio.wait_for(client.async_update(), timeout=10)
 
     logging.info(
         f" Serial number: {ser} "
@@ -31,15 +28,17 @@ async def run_async_client():
     )
 
     logging.debug(f"Sensors data: {data}")
-    for key in data:
+    for key in sorted(data):
         desc = client.get_attribute(key)
         value = data[key]
         d = desc["description"]
         u = desc["unit"]
-        logging.info(f"{d} {value} {u}")
+        calculated = "(calculated)" if "template" in desc else ""
+        logging.info(f"{d} {value} {u} {calculated}")
 
     # except Exception as error:
     #     logging.error("Error: " + repr(error))
+
 
 if __name__ == "__main__":
     asyncio.run(run_async_client())
