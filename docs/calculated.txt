@@ -1,0 +1,67 @@
+ Solar -> Ppv / 1000
+PV Inverter Power -> Pex / 1000
+Charging -> Pcharge1 / 1000
+Discharging -> Pdischarge1 / 1000
+SOC -> SOC
+Import -> PacToUser / 1000
+Export -> PacToGrid / 1000
+Consumption -> (Ppv + Pdischarge1 + PacToUser - PacToGrid - Pcharge1) / 1000
+
+
+Total
+
+Solar ->
+    - Today(Epvtoday)
+    - Total (EpvTotal)
+Inverter  generation ->
+    - Today(Eextoday)
+    - Total (Eextotal)
+Discharged ->
+    - Today (Edischarge1Today)
+    - Total (Edischarge1Total)
+Exported To Grid ->
+    - Today (new version (EsystemToday - EselfToday)
+        else (EtoGridToday))
+    - Total (new version (EsystemTotal - EselfTotal)
+        else (EtoGridTotal))
+Load Consumption ->
+    - Today
+        (new version (ElocalLoadToday)
+        else (TodaySolar + Edischarge1Today + EtoUserToday - EtoGridToday - Echarge1Today)
+    - Total
+        (new version (ElocalLoadTotal)
+        else (TotalSolar + Edischarge1Total + EtoUserTotal - EtoGridTotal - Echarge1Total)
+Solar Revenue ->
+    Today (TodaySolar * Selling Price)
+    Total (TotalSolar * Selling Price)
+
+
+Self-Consumption
+
+System Production ->
+    (new version (EsystemToday)
+    else (Epvtoday + Edischarge1Today - Echarge1Today))
+Self Consumption ->
+    (new version (EselfToday)
+    else (System Production - EtoGridToday))
+Exported To Grid ->
+    (new version (System Production - EselfToday)
+    else (EtoGridToday))
+Load Consumption ->
+    (new version (ElocalLoadToday)
+    else (EpvToday + Edischarge1Today + EtoUserToday - EtoGridToday - Echarge1Today))
+Imported From Grid ->
+    (new version (Load Consumption - Self-Consumption)
+    else (EtoUserToday - EacChargeToday))
+
+
+Chart
+
+System Production -> (Ppv + Pdischarge1 - Pcharge1) / 1000
+Solar -> Ppv / 1000
+Load Consumption -> (Ppv + Pdischarge1 + PacToUser - PacToGrid - Pcharge1) / 1000
+Self-Consumption -> (PacToGrid > 0 (Load Consumption)
+    else (System Production))
+Exported To Grid -> PacToGrid / 1000
+Imported From Grid -> PacToUser / 1000
+PV Inverter Power -> Pex / 1000
