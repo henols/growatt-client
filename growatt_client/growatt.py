@@ -158,7 +158,7 @@ class GrowattClient:
 
             # Assuming the serial number doesn't change, it is read only once
             registers = await self._client.read_holding_registers(
-                0, 29, slave=self._address
+                0, 30, slave=self._address
             )
             if registers.isError():
                 await self._client.close()
