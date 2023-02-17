@@ -140,7 +140,7 @@ class GrowattClient:
         for value in ATTRIBUTE_TEMPALTES:
             templ = value["template"].format_map(data)
             val = round(eval(templ), 1)
-            self._logger.info(
+            self._logger.debug(
                 "Converting template: %s \n -> to: %s = %f",
                 value["template"],
                 templ,
@@ -158,7 +158,7 @@ class GrowattClient:
 
             # Assuming the serial number doesn't change, it is read only once
             registers = await self._client.read_holding_registers(
-                0, 52, slave=self._address
+                0, 29, slave=self._address
             )
             if registers.isError():
                 await self._client.close()
@@ -194,17 +194,18 @@ class GrowattClient:
                 )
             )
 
-            self._logger.info(
-                (
-                    f"{registers.registers[45]}-"
-                    f"{registers.registers[46]:02d}-"
-                    f"{registers.registers[47]:02d} "
-                    f"{registers.registers[48]:02d}:"
-                    f"{registers.registers[49]:02d}:"
-                    f"{registers.registers[50]:02d} "
-                    # f"day: {registers.registers[51]} "
-                )
-            )
+            # Read time
+            # self._logger.info(
+            #     (
+            #         f"{registers.registers[45]}-"
+            #         f"{registers.registers[46]:02d}-"
+            #         f"{registers.registers[47]:02d} "
+            #         f"{registers.registers[48]:02d}:"
+            #         f"{registers.registers[49]:02d}:"
+            #         f"{registers.registers[50]:02d} "
+            #         # f"day: {registers.registers[51]} "
+            #     )
+            # )
 
             await self._client.close()
 
