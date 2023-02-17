@@ -41,7 +41,6 @@ def create_template(name, unit, desc, template):
         "description": desc,
         "template": template,
     }
-    print(value)
     return value
 
 
