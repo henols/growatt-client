@@ -1,11 +1,11 @@
- Solar -> Ppv / 1000
-PV Inverter Power -> Pex / 1000
-Charging -> Pcharge1 / 1000
-Discharging -> Pdischarge1 / 1000
+ Solar -> Ppv
+PV Inverter Power -> Pex 
+Charging -> Pcharge1
+Discharging -> Pdischarge1
 SOC -> SOC
-Import -> PacToUser / 1000
-Export -> PacToGrid / 1000
-Consumption -> (Ppv + Pdischarge1 + PacToUser - PacToGrid - Pcharge1) / 1000
+Import -> PacToUser 
+Export -> PacToGrid
+Consumption -> (Ppv + Pdischarge1 + PacToUser - PacToGrid - Pcharge1)
 
 
 Total
@@ -57,11 +57,11 @@ Imported From Grid ->
 
 Chart
 
-System Production -> (Ppv + Pdischarge1 - Pcharge1) / 1000
-Solar -> Ppv / 1000
-Load Consumption -> (Ppv + Pdischarge1 + PacToUser - PacToGrid - Pcharge1) / 1000
+System Production -> (Ppv + Pdischarge1 - Pcharge1) 
+Solar -> Ppv
+Load Consumption -> (Ppv + Pdischarge1 + PacToUser - PacToGrid - Pcharge1) 
 Self-Consumption -> (PacToGrid > 0 (Load Consumption)
     else (System Production))
-Exported To Grid -> PacToGrid / 1000
-Imported From Grid -> PacToUser / 1000
-PV Inverter Power -> Pex / 1000
+Exported To Grid -> PacToGrid 
+Imported From Grid -> PacToUser
+PV Inverter Power -> Pex
