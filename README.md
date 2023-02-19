@@ -17,6 +17,9 @@ Inverter properties
 - serial_number
 - model_number
 - firmware
+<!-- attr-start -->
+Blank
+<!-- attr-end-->
 
 [Supprted attributes](attributes.md)
 
