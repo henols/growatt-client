@@ -11,6 +11,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+    - name: pwd
+      run: pwd
     - name: Update readme.md
       run: python3 .github/scripts/update_readme.py
     - name: Check for changes
