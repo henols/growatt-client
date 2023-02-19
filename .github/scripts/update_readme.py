@@ -10,7 +10,7 @@ def random_text(length=8):
     return ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', k=length))
 
 # Open the file for reading and writing
-with open('../../README.md', 'r+') as f:
+with open('README.md', 'r+') as f:
     # Read the contents of the file
     contents = f.read()
     print(contents)
