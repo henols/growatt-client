@@ -19,7 +19,7 @@ Inverter properties
 - firmware
 <!-- attr-start -->
 Blank
-<!-- attr-end-->
+<!-- attr-end -->
 
 [Supprted attributes](attributes.md)
 
