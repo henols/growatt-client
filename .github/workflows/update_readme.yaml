@@ -25,6 +25,6 @@ jobs:
 
     - name: Push changes
       if: steps.changes.outputs.return-code == 1
-      uses: ad-m/github-push-action@mastet
+      uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
