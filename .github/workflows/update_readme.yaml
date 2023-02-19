@@ -2,7 +2,7 @@ name: Auto-commit changes
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
 
 jobs:
   build:
@@ -14,7 +14,8 @@ jobs:
 
     - name: Install dependencies
       run: pip install -r requirements.txt
-
+    - name: Update readme.md
+      run: .github/scripts/update_readme.py
     - name: Check for changes
       id: changes
       run: |
