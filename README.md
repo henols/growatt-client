@@ -32,9 +32,9 @@ Depending on the firmware version of your inverter, not all attributes might be 
 | battery_discharge_lifetime | 1054 | kWh | Battery discharged total |  |
 | battery_discharge_today | 1052 | kWh | Battery discharged today |  |
 | battery_voltage | 1013 | V | Battery voltage |  |
-| consumption | Calc | kW | Consumption | {solar_generation} + {battery_discharge} + {import_from_grid} - {export_to_grid} - {battery_charge} |
-| consumption_lifetime | Calc | kWh | Consumption total | {solar_generation_lifetime} + {battery_discharge_lifetime} + {import_from_grid_lifetime} - {export_to_grid_lifetime} - {battery_charge_lifetime} |
-| consumption_today | Calc | kWh | Consumption today | {solar_generation_today} + {battery_discharge_today} + {import_from_grid_today} - {export_to_grid_today} - {battery_charge_today} |
+| consumption | Calc | kW | Consumption | {photovoltaics} + {battery_discharge} + {import_from_grid} - {export_to_grid} - {battery_charge} |
+| consumption_lifetime | Calc | kWh | Consumption total | {photovoltaics_lifetime} + {battery_discharge_lifetime} + {import_from_grid_lifetime} - {export_to_grid_lifetime} - {battery_charge_lifetime} |
+| consumption_today | Calc | kWh | Consumption today | {photovoltaics_today} + {battery_discharge_today} + {import_from_grid_today} - {export_to_grid_today} - {battery_charge_today} |
 | export_to_grid | 1029 | kW | Export to grid |  |
 | export_to_grid_lifetime | 1050 | kWh | Export to grid total |  |
 | export_to_grid_today | 1048 | kWh | Export to grid today |  |
@@ -43,26 +43,30 @@ Depending on the firmware version of your inverter, not all attributes might be 
 | import_from_grid | 1021 | kW | Import from grid |  |
 | import_from_grid_lifetime | 1046 | kWh | Import from grid total |  |
 | import_from_grid_today | 1044 | kWh | Import from grid today |  |
-| inverter_temperature1 | 93 | °C | Inverter temperature |  |
-| inverter_temperature2 | 94 | °C | The inside IPM in inverter Temperature |  |
-| inverter_temperature3 | 1040 | °C | Battery temperature |  |
+| inverter_temperature_1 | 93 | °C | Inverter temperature |  |
+| inverter_temperature_2 | 94 | °C | The inside IPM in inverter Temperature |  |
+| inverter_temperature_3 | 1040 | °C | Battery temperature |  |
 | local_load | 1037 | kW | Inverter local load |  |
 | local_load_lifetime | 1062 | kWh | Inverter local load total |  |
 | local_load_today | 1060 | kWh | Inverter local load today |  |
-| pv1 | 5 | kW | PV1 |  |
-| pv1_lifetime | 61 | kWh | PV1 total |  |
-| pv1_today | 59 | kWh | PV1 today |  |
-| pv1_voltage | 3 | V | PV1 voltage |  |
-| pv2 | 9 | kW | PV2 |  |
-| pv2_lifetime | 65 | kWh | PV2 total |  |
-| pv2_today | 63 | kWh | PV2 today |  |
-| pv2_voltage | 7 | V | PV2 voltage |  |
-| solar_generation | 1 | kW | All PV generation |  |
-| solar_generation_lifetime | 91 | kWh | All PV generation total |  |
-| solar_generation_today | Calc | kWh | All PV generation today | {pv2_today} + {pv1_today} |
-| statement_of_charge | 1014 | % | Statement of charge |  |
-| system_production_lifetime | 1139 | kWh | System production total |  |
-| system_production_today | 1137 | kWh | System production today |  |
+| photovoltaics | 1 | kW | Photovoltaics (PV) generation |  |
+| photovoltaics_1 | 5 | kW | Photovoltaics (PV) 1 |  |
+| photovoltaics_1_lifetime | 61 | kWh | Photovoltaics (PV) 1 total |  |
+| photovoltaics_1_today | 59 | kWh | Photovoltaics (PV) 1 today |  |
+| photovoltaics_1_voltage | 3 | V | Photovoltaics (PV) 1 voltage |  |
+| photovoltaics_2 | 9 | kW | Photovoltaics (PV) 2 |  |
+| photovoltaics_2_lifetime | 65 | kWh | Photovoltaics (PV) 2 total |  |
+| photovoltaics_2_today | 63 | kWh | Photovoltaics (PV) 2 today |  |
+| photovoltaics_2_voltage | 7 | V | Photovoltaics (PV) 2 voltage |  |
+| photovoltaics_lifetime | 91 | kWh | Photovoltaics (PV) generation total |  |
+| photovoltaics_today | Calc | kWh | Photovoltaics (PV) generation today | {photovoltaics_2_today} + {photovoltaics_1_today} |
+| self_consumption | Calc | kW | Self Consumption | {consumption} if {export_to_grid} > 0 else {system_production} |
+| statement_of_charge | 1014 | % | Statement of charge (SOC), capacity |  |
+| system_production | Calc | kW | System Production | {photovoltaics} + {battery_discharge} - {battery_charge} |
+| system_production_lifetime | Calc | kWh | System Production total | {photovoltaics_lifetime} + {battery_discharge_lifetime} - {battery_charge_lifetime} |
+| system_production_today | Calc | kWh | System Production today | {photovoltaics_today} + {battery_discharge_today} - {battery_charge_today} |
+| system_production_with_battery_lifetime | 1139 | kWh | System production total (including battery) |  |
+| system_production_with_battery_today | 1137 | kWh | System production today (including battery) |  |
 
 <!-- attr-end -->
 
