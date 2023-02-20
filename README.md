@@ -12,16 +12,14 @@ Connect the RS232 DB9 usb adapter to the RS232 port on the underside of the inve
 
 Depending on the firmware version of your inverter, not all attributes might be available
 
-Inverter properties
-
+### Inverter properties
 - serial_number
 - model_number
 - firmware
-<!-- attr-start -->
-Blank
-<!-- attr-end -->
 
-[Supprted attributes](attributes.md)
+### Supprted attributes
+<!-- attr-start -->
+<!-- attr-end -->
 
 ## How to use the package
 
