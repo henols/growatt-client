@@ -12,9 +12,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: pip install -r requirements.txt
-
     - name: Update readme.md
       run: | 
         export PYTHONPATH=$PWD

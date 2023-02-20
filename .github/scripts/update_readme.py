@@ -1,16 +1,14 @@
-from growatt_client import GrowattClient
-
+from growatt_client.const import ATTRIBUTES
 # Define the file path and random text to replace the comments
 file_path = 'README.md'
 
 
 def gen_markup():
-    client = GrowattClient()
 
     text = "\n\n| Attribute | Register | Unit | Description | Misc |\n"
     text += "| --- | ---: | --- | --- | --- |\n"
 
-    attributes = client.get_attributes()
+    attributes = ATTRIBUTES
     attributes.sort(key=lambda x: x["name"])
     for attr in attributes:
         name = attr["name"]
