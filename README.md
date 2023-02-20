@@ -7,8 +7,9 @@ Python wrapper for getting data asynchronously from Growatt inverters via serial
 
 The implementation is based on [Growatt Inverter Modbus RTU Protocol V1.20](docs/growatt-inverter-modbus-rtu-protocol-ii-series-modbus-growatt-inverter-modbus.pdf).
 
-The Growatt inverted must support the modbus protocol (some older inverters only support proprietary serial communication)
-Connect the RS232 DB9 usb adapter to the RS232 port on the underside of the inverter (you might have to remove a cover plate).
+
+Tested with inverters:
+ - SPH 10000 TL3 BH
 
 ## Attributes
 
@@ -86,7 +87,12 @@ logging.basicConfig(level=logging.DEBUG)
 async def main():
     port = str(argv[1]) if len(argv) > 1 else DEFAULT_PORT
     address = int(argv[2]) if len(argv) > 2 else DEFAULT_ADDRESS
-    growatt_client = GrowattClient(port, address)
+    growatt_client = GrowattClient(
+        port, 
+        address,
+        attributes=["import_from_grid_today", "local_load_lifetime"],
+        )
+        
     try:
         data = await growatt_client.async_update()
         print(f"Sensors data: {data}")
