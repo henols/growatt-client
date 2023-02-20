@@ -1,31 +1,47 @@
-#!/usr/bin/env python3
-import re
-import random
+from growatt_client import GrowattClient
 
-# Define the regex pattern to match HTML comments containing "attr-start" and "attr-end"
-pattern = r'<!--\s*attr-start\s*-->(.*?)<!--\s*attr-end\s*-->'
+# Define the file path and random text to replace the comments
+file_path = 'README.md'
 
-# Define the function to generate random replacement text
-def random_text(length=8):
-    return ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', k=length))
 
-# Open the file for reading and writing
-with open('README.md', 'r+') as f:
-    # Read the contents of the file
-    contents = f.read()
-    print(contents)
-    # Use regex to find all matches of the pattern
-    matches = re.findall(pattern, contents, flags=re.DOTALL)
+def gen_markup():
+    client = GrowattClient()
 
-    # Loop over the matches and replace them with random text
-    for match in matches:
-        replacement = random_text()
+    text = "\n\n| Attribute | Register | Unit | Description | Misc |\n"
+    text += "| --- | ---: | --- | --- | --- |\n"
 
-        contents = contents.replace(match, replacement)
+    attributes = client.get_attributes()
+    attributes.sort(key=lambda x: x["name"])
+    for attr in attributes:
+        name = attr["name"]
+        d = attr["description"]
+        u = attr["unit"]
+        calculated = True if "template" in attr else False
+        m = ""
+        if calculated:
+            r = "Calc"
+            m = attr["template"]
+        else:
+            r = attr["pos"]
+        text += (f"| {name} | {r} | {u} | {d} | {m} |\n")
+    
+    return text + '\n'
 
-    # Reset the file pointer to the beginning of the file and truncate the file
-    f.seek(0)
-    f.truncate()
+# Open the file and read its contents
+with open(file_path, 'r') as file:
+    content = file.read()
 
-    # Write the modified contents back to the file
-    f.write(contents)
+# Find the start and end indices of the HTML comments
+start_index = content.find('<!-- attr-start -->')
+end_index = content.find('<!-- attr-end -->')
+
+new_text = gen_markup()
+
+# Replace the content between the comments with the random text
+if start_index != -1 and end_index != -1:
+    start_index += len('<!-- attr-start -->')
+    content = content[:start_index] + new_text + content[end_index:]
+
+# Save the updated content back to the file
+with open(file_path, 'w') as file:
+    file.write(content)
