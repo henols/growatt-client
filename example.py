@@ -16,7 +16,12 @@ logging.basicConfig(level=logging.INFO)
 async def run_async_client():
     port = str(argv[1]) if len(argv) > 1 else DEFAULT_PORT
     address = int(argv[2]) if len(argv) > 2 else DEFAULT_ADDRESS
-    client = GrowattClient(port, address)
+    client = GrowattClient(
+        port,
+        address,
+        attributes=["import_from_grid_today", "local_load_lifetime"],
+    )
+    # client = GrowattClient(port, address)
 
     data = await client.async_update()
     ser = client.get_serial_number()
