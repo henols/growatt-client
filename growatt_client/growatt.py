@@ -1,6 +1,6 @@
 """
 Python wrapper for getting data asynchronously from Growatt inverters
-via serial usb RS232/RS485 connection and modbus RTU protocol.
+via serial RS232/RS485 connection and modbus RTU protocol.
 """
 import logging
 import os

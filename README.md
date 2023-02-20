@@ -3,7 +3,9 @@
 [![PyPI][pypi-releases-shield]][pypi-releases]
 [![GitHub issues](https://img.shields.io/github/issues/henols/growatt-client.svg)](https://github.com/henols/growatt-client/issues/)
 
-Python wrapper for getting data asynchronously from Growatt inverters via serial usb RS232 connection and modbus RTU protocol.
+Python wrapper for getting data asynchronously from Growatt inverters via serial RS232/RS485 connection and modbus RTU protocol.
+
+The implementation is based on [Growatt Inverter Modbus RTU Protocol V1.20](docs/growatt-inverter-modbus-rtu-protocol-ii-series-modbus-growatt-inverter-modbus.pdf).
 
 The Growatt inverted must support the modbus protocol (some older inverters only support proprietary serial communication)
 Connect the RS232 DB9 usb adapter to the RS232 port on the underside of the inverter (you might have to remove a cover plate).
@@ -12,12 +14,12 @@ Connect the RS232 DB9 usb adapter to the RS232 port on the underside of the inve
 
 Depending on the firmware version of your inverter, not all attributes might be available
 
-### Inverter properties
+### Holding register attributes
 - serial_number
 - model_number
 - firmware
 
-### Supprted attributes
+### Input register attributes
 <!-- attr-start -->
 
 | Attribute | Register | Unit | Description | Misc |
@@ -70,7 +72,7 @@ import asyncio
 import logging
 from sys import argv
 
-from growatt-client.growatt import GrowattClient
+from growatt_client.growatt import GrowattClient
 
 # defaults
 # USB port of RS232/RS485 converter
