@@ -9,8 +9,6 @@ from pymodbus.client.serial import AsyncModbusSerialClient as ModbusClient
 
 from .const import (
     ATTRIBUTES,
-    ATTRIBUTES_GROUPED,
-    ATTRIBUTE_TEMPALTES,
     DEFAULT_ADDRESS,
     DEFAULT_PORT,
     DOUBLE_BYTE,
@@ -55,11 +53,36 @@ def get_string(res, index, length):
     return string
 
 
+def group_values(values):
+    values.sort(key=lambda x: x["pos"])
+    groups = []
+    pos = -200
+
+    for value in values:
+        if pos + 100 < value["pos"] or (pos < 0 and value["pos"] >= 0):
+            pos = value["pos"]
+            group_list = []
+            group = {}
+            group["pos"] = pos
+            group["values"] = group_list
+            groups.append(group)
+        group_list.append(value)
+        group["length"] = (
+            value["pos"] - pos + (2 if value["type"] == DOUBLE_BYTE else 1)
+        )
+    return groups
+
+
 class GrowattClient:
     """Main class to communicate with the Growatt inverter."""
 
     def __init__(
-        self, port=DEFAULT_PORT, address=DEFAULT_ADDRESS, logger=None
+        self,
+        port=DEFAULT_PORT,
+        address=DEFAULT_ADDRESS,
+        attributes=None,
+        attribute_defs=ATTRIBUTES,
+        logger=None,
     ):
         """Initialize."""
         if logger is None:
@@ -67,6 +90,25 @@ class GrowattClient:
             self._logger.addHandler(logging.NullHandler())
         else:
             self._logger = logger
+
+        if attributes is not None:
+            attribute_defs = []
+            for attr_name in attributes:
+                for a in ATTRIBUTES:
+                    if a["name"] == attr_name:
+                        attribute_defs.append(a)
+
+        _attributes = []
+        for attr in attribute_defs:
+            if True if "pos" in attr else False:
+                _attributes.append(attr)
+
+        self.attributes = group_values(_attributes)
+
+        self.templates = []
+        for attr in attribute_defs:
+            if True if "template" in attr else False:
+                self.templates.append(attr)
 
         # usb port
         self._port = port
@@ -107,7 +149,7 @@ class GrowattClient:
         data = {}
         await self.update_hardware_info()
 
-        for group in ATTRIBUTES_GROUPED:
+        for group in self.attributes:
             pos = group["pos"]
             values = group["values"]
             self._logger.debug(group)
@@ -137,7 +179,7 @@ class GrowattClient:
 
             await self._client.close()
 
-        for value in ATTRIBUTE_TEMPALTES:
+        for value in self.templates:
             templ = value["template"].format_map(data)
             val = round(eval(templ), 1)
             self._logger.debug(
@@ -210,7 +252,7 @@ class GrowattClient:
             await self._client.close()
 
     def get_attributes(self):
-        return ATTRIBUTES + ATTRIBUTE_TEMPALTES
+        return ATTRIBUTES
 
     def get_attribute(self, name):
         for a in self.get_attributes():

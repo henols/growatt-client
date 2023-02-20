@@ -44,26 +44,6 @@ def create_template(name, unit, desc, template):
     return value
 
 
-def group_values(values):
-    values.sort(key=lambda x: x["pos"])
-    groups = []
-    pos = -200
-
-    for value in values:
-        if pos + 100 < value["pos"] or (pos < 0 and value["pos"] >= 0):
-            pos = value["pos"]
-            group_list = []
-            group = {}
-            group["pos"] = pos
-            group["values"] = group_list
-            groups.append(group)
-        group_list.append(value)
-        group["length"] = (
-            value["pos"] - pos + (2 if value["type"] == DOUBLE_BYTE else 1)
-        )
-    return groups
-
-
 ATTRIBUTES = [
     create_value("pv1", 5, POWER_KILO_WATT, "PV1", DOUBLE_BYTE, 0.0001),
     create_value(
@@ -298,12 +278,6 @@ ATTRIBUTES = [
         "Battery temperature",
         SINGLE_BYTE,
     ),
-]
-
-ATTRIBUTES_GROUPED = group_values(ATTRIBUTES)
-
-
-ATTRIBUTE_TEMPALTES = [
     create_template(
         "solar_generation_today",
         ENERGY_KILO_WATT_HOUR,
