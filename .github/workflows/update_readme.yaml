@@ -11,10 +11,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-    - name: Set Pynthon path
-      run: export PYTHONPATH=$PWD
     - name: Update readme.md
-      run: python3 .github/scripts/update_readme.py
+      run: | 
+        export PYTHONPATH=$PWD
+        echo $PYTHONPATH
+        python3 .github/scripts/update_readme.py
     - name: Check for changes
       id: changes
       run: |
