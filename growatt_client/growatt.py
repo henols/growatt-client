@@ -85,6 +85,8 @@ class GrowattClient:
         logger=None,
     ):
 
+        logging.getLogger("pymodbus.client.serial").setLevel(30)
+
         """Initialize."""
         if logger is None:
             self._logger = logging.getLogger(__name__)
