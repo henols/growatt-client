@@ -84,6 +84,7 @@ class GrowattClient:
         attribute_defs=ATTRIBUTES,
         logger=None,
     ):
+
         """Initialize."""
         if logger is None:
             self._logger = logging.getLogger(__name__)
@@ -149,14 +150,14 @@ class GrowattClient:
         data = {}
         await self.update_hardware_info()
 
+        if not await self._client.connect():
+            self._logger.debug("Modbus connection failed.")
+            raise ModbusException("Modbus connection failed.")
+
         for group in self.attributes:
             pos = group["pos"]
             values = group["values"]
             self._logger.debug(group)
-
-            if not await self._client.connect():
-                self._logger.debug("Modbus connection failed.")
-                raise ModbusException("Modbus connection failed.")
 
             registers = await self._client.read_input_registers(
                 pos, group["length"], slave=self._address
@@ -177,10 +178,11 @@ class GrowattClient:
                 )
                 data[value["name"]] = val
 
-            await self._client.close()
+        await self._client.close()
 
         for value in self.templates:
             templ = value["template"].format_map(data)
+            self._logger.debug(templ)
             val = round(eval(templ), 1)
             self._logger.debug(
                 "Converting template: %s \n -> to: %s = %f",
