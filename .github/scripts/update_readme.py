@@ -1,4 +1,4 @@
-from growatt_client.const import ATTRIBUTES
+from growatt_client.const import ATTRIBUTES, ATTRIBUTE_TEMPALTES
 # Define the file path and random text to replace the comments
 file_path = 'README.md'
 
@@ -8,7 +8,7 @@ def gen_markup():
     text = "\n\n| Attribute | Register | Unit | Description | Misc |\n"
     text += "| --- | ---: | --- | --- | --- |\n"
 
-    attributes = ATTRIBUTES
+    attributes = ATTRIBUTES + ATTRIBUTE_TEMPALTES
     attributes.sort(key=lambda x: x["name"])
     for attr in attributes:
         name = attr["name"]
