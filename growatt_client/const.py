@@ -4,6 +4,52 @@
 DEFAULT_PORT = "/dev/ttyUSB0"
 DEFAULT_ADDRESS = 0x1
 
+
+PHOTOVOLTAICS_1 = "photovoltaics_1"
+PHOTOVOLTAICS_1_VOLTAGE = "photovoltaics_1_voltage"
+PHOTOVOLTAICS_1_TODAY = "photovoltaics_1_today"
+PHOTOVOLTAICS_1_LIFETIME = "photovoltaics_1_lifetime"
+PHOTOVOLTAICS_2 = "photovoltaics_2"
+PHOTOVOLTAICS_2_VOLTAGE = "photovoltaics_2_voltage"
+PHOTOVOLTAICS_2_TODAY = "photovoltaics_2_today"
+PHOTOVOLTAICS_2_LIFETIME = "photovoltaics_2_lifetime"
+PHOTOVOLTAICS = "photovoltaics"
+PHOTOVOLTAICS_LIFETIME = "photovoltaics_lifetime"
+STATEMENT_OF_CHARGE = "statement_of_charge"
+BATTERY_VOLTAGE = "battery_voltage"
+BATTERY_CHARGE = "battery_charge"
+BATTERY_CHARGE_TODAY = "battery_charge_today"
+BATTERY_CHARGE_LIFETIME = "battery_charge_lifetime"
+BATTERY_DISCHARGE = "battery_discharge"
+BATTERY_DISCHARGE_TODAY = "battery_discharge_today"
+BATTERY_DISCHARGE_LIFETIME = "battery_discharge_lifetime"
+LOCAL_LOAD = "local_load"
+LOCAL_LOAD_TODAY = "local_load_today"
+LOCAL_LOAD_LIFETIME = "local_load_lifetime"
+EXPORT_TO_GRID = "export_to_grid"
+EXPORT_TO_GRID_TODAY = "export_to_grid_today"
+EXPORT_TO_GRID_LIFETIME = "export_to_grid_lifetime"
+IMPORT_FROM_GRID = "import_from_grid"
+IMPORT_FROM_GRID_TODAY = "import_from_grid_today"
+IMPORT_FROM_GRID_LIFETIME = "import_from_grid_lifetime"
+SYSTEM_PRODUCTION_WITH_BATTERY_TODAY = "system_production_with_battery_today"
+SYSTEM_PRODUCTION_WITH_BATTERY_LIFETIME = (
+    "system_production_with_battery_lifetime"
+)
+GRID_VOLTAGE = "grid_voltage"
+GRID_FREQUENCY = "grid_frequency"
+INVERTER_TEMPERATURE_1 = "inverter_temperature_1"
+INVERTER_TEMPERATURE_2 = "inverter_temperature_2"
+INVERTER_TEMPERATURE_3 = "inverter_temperature_3"
+PHOTOVOLTAICS_TODAY = "photovoltaics_today"
+CONSUMPTION = "consumption"
+CONSUMPTION_TODAY = "consumption_today"
+CONSUMPTION_LIFETIME = "consumption_lifetime"
+SYSTEM_PRODUCTION = "system_production"
+SYSTEM_PRODUCTION_TODAY = "system_production_today"
+SYSTEM_PRODUCTION_LIFETIME = "system_production_lifetime"
+SELF_CONSUMPTION = "self_consumption"
+
 # Word type
 INT_BYTE = "int_byte"
 SINGLE_BYTE = "single_byte"
@@ -45,78 +91,92 @@ def create_template(name, unit, desc, template):
 
 
 ATTRIBUTES = [
-    create_value("pv1", 5, POWER_KILO_WATT, "PV1", DOUBLE_BYTE, 0.0001),
     create_value(
-        "pv1_voltage",
-        3,
-        ELECTRICAL_POTENTIAL_VOLT,
-        "PV1 voltage",
-        SINGLE_BYTE,
-    ),
-    create_value(
-        "pv1_today",
-        59,
-        ENERGY_KILO_WATT_HOUR,
-        "PV1 today",
-    ),
-    create_value(
-        "pv1_lifetime",
-        61,
-        ENERGY_KILO_WATT_HOUR,
-        "PV1 total",
-    ),
-    create_value("pv2", 9, POWER_KILO_WATT, "PV2", DOUBLE_BYTE, 0.0001),
-    create_value(
-        "pv2_voltage",
-        7,
-        ELECTRICAL_POTENTIAL_VOLT,
-        "PV2 voltage",
-        SINGLE_BYTE,
-    ),
-    create_value(
-        "pv2_today",
-        63,
-        ENERGY_KILO_WATT_HOUR,
-        "PV2 today",
-    ),
-    create_value(
-        "pv2_lifetime",
-        65,
-        ENERGY_KILO_WATT_HOUR,
-        "PV2 total",
-    ),
-    create_value(
-        "solar_generation",
-        1,
+        PHOTOVOLTAICS_1,
+        5,
         POWER_KILO_WATT,
-        "All PV generation",
+        "Photovoltaics (PV) 1",
         DOUBLE_BYTE,
         0.0001,
     ),
     create_value(
-        "solar_generation_lifetime",
+        PHOTOVOLTAICS_1_VOLTAGE,
+        3,
+        ELECTRICAL_POTENTIAL_VOLT,
+        "Photovoltaics (PV) 1 voltage",
+        SINGLE_BYTE,
+    ),
+    create_value(
+        PHOTOVOLTAICS_1_TODAY,
+        59,
+        ENERGY_KILO_WATT_HOUR,
+        "Photovoltaics (PV) 1 today",
+    ),
+    create_value(
+        PHOTOVOLTAICS_1_LIFETIME,
+        61,
+        ENERGY_KILO_WATT_HOUR,
+        "Photovoltaics (PV) 1 total",
+    ),
+    create_value(
+        PHOTOVOLTAICS_2,
+        9,
+        POWER_KILO_WATT,
+        "Photovoltaics (PV) 2",
+        DOUBLE_BYTE,
+        0.0001,
+    ),
+    create_value(
+        PHOTOVOLTAICS_2_VOLTAGE,
+        7,
+        ELECTRICAL_POTENTIAL_VOLT,
+        "Photovoltaics (PV) 2 voltage",
+        SINGLE_BYTE,
+    ),
+    create_value(
+        PHOTOVOLTAICS_2_TODAY,
+        63,
+        ENERGY_KILO_WATT_HOUR,
+        "Photovoltaics (PV) 2 today",
+    ),
+    create_value(
+        PHOTOVOLTAICS_2_LIFETIME,
+        65,
+        ENERGY_KILO_WATT_HOUR,
+        "Photovoltaics (PV) 2 total",
+    ),
+    create_value(
+        PHOTOVOLTAICS,
+        1,
+        POWER_KILO_WATT,
+        "Photovoltaics (PV) generation",
+        DOUBLE_BYTE,
+        0.0001,
+    ),
+    create_value(
+        PHOTOVOLTAICS_LIFETIME,
         91,
         ENERGY_KILO_WATT_HOUR,
-        "All PV generation total",
+        "Photovoltaics (PV) generation total",
     ),
     # Battery
     create_value(
-        "statement_of_charge",
+        STATEMENT_OF_CHARGE,
         1014,
         "%",
-        "Statement of charge",
+        "Statement of charge (SOC), capacity",
         INT_BYTE,
         1,
     ),
     create_value(
-        "battery_voltage",
+        BATTERY_VOLTAGE,
         1013,
         ELECTRICAL_POTENTIAL_VOLT,
         "Battery voltage",
         SINGLE_BYTE,
     ),
     create_value(
-        "battery_charge",
+        BATTERY_CHARGE,
         1011,
         POWER_KILO_WATT,
         "Battery charging",
@@ -124,19 +184,19 @@ ATTRIBUTES = [
         0.0001,
     ),
     create_value(
-        "battery_charge_today",
+        BATTERY_CHARGE_TODAY,
         1056,
         ENERGY_KILO_WATT_HOUR,
         "Battery charged today",
     ),
     create_value(
-        "battery_charge_lifetime",
+        BATTERY_CHARGE_LIFETIME,
         1058,
         ENERGY_KILO_WATT_HOUR,
         "Battery charged total",
     ),
     create_value(
-        "battery_discharge",
+        BATTERY_DISCHARGE,
         1009,
         POWER_KILO_WATT,
         "Battery discharging",
@@ -144,20 +204,20 @@ ATTRIBUTES = [
         0.0001,
     ),
     create_value(
-        "battery_discharge_today",
+        BATTERY_DISCHARGE_TODAY,
         1052,
         ENERGY_KILO_WATT_HOUR,
         "Battery discharged today",
     ),
     create_value(
-        "battery_discharge_lifetime",
+        BATTERY_DISCHARGE_LIFETIME,
         1054,
         ENERGY_KILO_WATT_HOUR,
         "Battery discharged total",
     ),
     # Load consumtion
     create_value(
-        "local_load",
+        LOCAL_LOAD,
         1037,
         POWER_KILO_WATT,
         "Inverter local load",
@@ -165,20 +225,20 @@ ATTRIBUTES = [
         0.0001,
     ),
     create_value(
-        "local_load_today",
+        LOCAL_LOAD_TODAY,
         1060,
         ENERGY_KILO_WATT_HOUR,
         "Inverter local load today",
     ),
     create_value(
-        "local_load_lifetime",
+        LOCAL_LOAD_LIFETIME,
         1062,
         ENERGY_KILO_WATT_HOUR,
         "Inverter local load total",
     ),
     # Export to grid
     create_value(
-        "export_to_grid",
+        EXPORT_TO_GRID,
         1029,
         POWER_KILO_WATT,
         "Export to grid",
@@ -186,20 +246,20 @@ ATTRIBUTES = [
         0.0001,
     ),
     create_value(
-        "export_to_grid_today",
+        EXPORT_TO_GRID_TODAY,
         1048,
         ENERGY_KILO_WATT_HOUR,
         "Export to grid today",
     ),
     create_value(
-        "export_to_grid_lifetime",
+        EXPORT_TO_GRID_LIFETIME,
         1050,
         ENERGY_KILO_WATT_HOUR,
         "Export to grid total",
     ),
     # Import from grid
     create_value(
-        "import_from_grid",
+        IMPORT_FROM_GRID,
         1021,
         POWER_KILO_WATT,
         "Import from grid",
@@ -207,104 +267,118 @@ ATTRIBUTES = [
         0.0001,
     ),
     create_value(
-        "import_from_grid_today",
+        IMPORT_FROM_GRID_TODAY,
         1044,
         ENERGY_KILO_WATT_HOUR,
         "Import from grid today",
     ),
     create_value(
-        "import_from_grid_lifetime",
+        IMPORT_FROM_GRID_LIFETIME,
         1046,
         ENERGY_KILO_WATT_HOUR,
         "Import from grid total",
     ),
     create_value(
-        "system_production_today",
+        SYSTEM_PRODUCTION_WITH_BATTERY_TODAY,
         1137,
         ENERGY_KILO_WATT_HOUR,
-        "System production today",
+        "System production today (including battery)",
     ),
     create_value(
-        "system_production_lifetime",
+        SYSTEM_PRODUCTION_WITH_BATTERY_LIFETIME,
         1139,
         ENERGY_KILO_WATT_HOUR,
-        "System production total",
+        "System production total (including battery)",
     ),
     create_value(
-        "grid_voltage",
+        GRID_VOLTAGE,
         38,
         ELECTRICAL_POTENTIAL_VOLT,
         "Grid voltage",
         SINGLE_BYTE,
     ),
-    # create_value(
-    #     "extra_inverter_power_today",
-    #     1133,
-    #     ENERGY_KILO_WATT_HOUR,
-    #     "Extra inverter Power today",
-    # ),
-    # create_value(
-    #     "extra_inverter_power_lifetime",
-    #     1135,
-    #     ENERGY_KILO_WATT_HOUR,
-    #     "Extra inverter Power total",
-    # ),
     create_value(
-        "grid_frequency",
+        GRID_FREQUENCY,
         37,
         FREQUENCY_HERTZ,
         "Grid frequency",
         SINGLE_BYTE,
-        0.01
+        0.01,
     ),
     create_value(
-        "inverter_temperature1",
+        INVERTER_TEMPERATURE_1,
         93,
         TEMP_CELSIUS,
         "Inverter temperature",
         SINGLE_BYTE,
     ),
     create_value(
-        "inverter_temperature2",
+        INVERTER_TEMPERATURE_2,
         94,
         TEMP_CELSIUS,
         "The inside IPM in inverter Temperature",
         SINGLE_BYTE,
     ),
     create_value(
-        "inverter_temperature3",
+        INVERTER_TEMPERATURE_3,
         1040,
         TEMP_CELSIUS,
         "Battery temperature",
         SINGLE_BYTE,
     ),
     create_template(
-        "solar_generation_today",
+        PHOTOVOLTAICS_TODAY,
         ENERGY_KILO_WATT_HOUR,
-        "All PV generation today",
-        "{pv2_today} + {pv1_today}",
+        "Photovoltaics (PV) generation today",
+        "{photovoltaics_2_today} + {photovoltaics_1_today}",
     ),
     create_template(
-        "consumption",
+        CONSUMPTION,
         POWER_KILO_WATT,
         "Consumption",
-        "{solar_generation} + {battery_discharge} + {import_from_grid} - \
+        "{photovoltaics} + {battery_discharge} + {import_from_grid} - \
             {export_to_grid} - {battery_charge}",
     ),
     create_template(
-        "consumption_today",
+        CONSUMPTION_TODAY,
         ENERGY_KILO_WATT_HOUR,
         "Consumption today",
-        "{solar_generation_today} + {battery_discharge_today} + \
+        "{photovoltaics_today} + {battery_discharge_today} + \
             {import_from_grid_today} - {export_to_grid_today} - \
             {battery_charge_today}",
     ),
     create_template(
-        "consumption_lifetime",
+        CONSUMPTION_LIFETIME,
         ENERGY_KILO_WATT_HOUR,
         "Consumption total",
-        "{solar_generation_lifetime} + {battery_discharge_lifetime} + \
+        "{photovoltaics_lifetime} + {battery_discharge_lifetime} + \
             {import_from_grid_lifetime} - {export_to_grid_lifetime} - \
             {battery_charge_lifetime}",
+    ),
+    create_template(
+        SYSTEM_PRODUCTION,
+        POWER_KILO_WATT,
+        "System Production",
+        "{photovoltaics} + {battery_discharge} - {battery_charge}",
+    ),
+    create_template(
+        SYSTEM_PRODUCTION_TODAY,
+        ENERGY_KILO_WATT_HOUR,
+        "System Production today",
+        "{photovoltaics_today} + {battery_discharge_today} - \
+            {battery_charge_today}",
+    ),
+    create_template(
+        SYSTEM_PRODUCTION_LIFETIME,
+        ENERGY_KILO_WATT_HOUR,
+        "System Production total",
+        "{photovoltaics_lifetime} + {battery_discharge_lifetime} - \
+            {battery_charge_lifetime}",
+    ),
+    create_template(
+        SELF_CONSUMPTION,
+        POWER_KILO_WATT,
+        "Self Consumption",
+        "{consumption} if {export_to_grid} > 0 else {system_production}",
     ),
 ]
